@@ -3,29 +3,51 @@
 // Составляющие проекта:
 // Целые числа; Переменные; Ввод / вывод данных; Условный оператор; Цикл; Бесконечный цикл; Операторы break, continue; Работа с модулем random для генерации случайных чисел; Функции.
 
-const numRandom = Math.floor(Math.random() * 100) + 1;
+class Guess {
+    constructor() {
+        this.start = 1;
+        this.end = 100;
+        this.middle = Math.floor((this.start + this.end) / 2);
+        this.counter = 1;
+        this.startGame();
+    }
 
-function checkGuess(num) {
-    let value = +prompt('Try to guess the number! Enter value');
-    let count = 1;
+    startGame() {
+        let question = prompt('Are you ready to play the game? Answer yes or no and guess the number from 1 to 100!');
 
-    while (value !== num) {
-        if (value === num) {
-            break;
-        } else if (value < num) {
-            alert('Too little, try again');
-            count++;
-            value = +prompt('Enter value');
-            continue;
-        } else {
-            alert('Too much, try again');
-            count++;
-            value = +prompt('Enter value');
-            continue;
+        for (; ;) {
+            if (question === 'yes') {
+                alert(`Great, let's get started!`);
+                this.guessTheNumber();
+                break;
+            } else if (question === 'no') {
+                alert('OK... Come another time');
+            } else {
+                question = prompt('You can answer only yes or no!');
+            }
         }
     }
-    
-    return `Congratulations, you guessed it! Number: ${value}! Number of moves: ${count}`;
+
+    guessTheNumber() {
+        for (; ;) {
+            let answer = prompt(`Your number is ${this.middle}? (yes or no)`);
+            
+            if (answer === 'yes') {
+                alert(`Super! I guessed! Your number is ${this.middle}! I used ${this.counter} tries!`);
+                break;
+            } else if (answer === 'no') {
+                this.counter++;
+                answer = prompt(`Is your number more or less than ${this.middle}? Answer + or -`);
+                if (answer === '+') {
+                    this.start = this.middle + 1;
+                    this.middle = Math.floor((this.start + this.end) / 2);
+                } else if (answer == '-') {
+                    this.end = this.middle - 1;
+                    this.middle = Math.floor((this.start + this.end) / 2);
+                } 
+            } 
+        }
+    }
 }
 
-checkGuess(numRandom);
+const guess = new Guess();
